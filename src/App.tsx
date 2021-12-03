@@ -1,13 +1,13 @@
+import MainHeader from "components/MainHeader"
 import MainWrapper from "components/MainWrapper"
-import Title from "components/Title"
-import Login from "login/Login"
-import Members from "members/Members"
+import Login from "pages/Login"
+import Members from "pages/Members"
 import { Route, Routes } from "react-router"
 
 const App = () => {
   return (
     <MainWrapper>
-      <Title />
+      <MainHeader />
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/members" element={<Members />} />

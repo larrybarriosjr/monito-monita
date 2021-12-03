@@ -1,6 +1,7 @@
 import { login } from "api/auth"
 import ContentButton from "components/ContentButton"
 import ContentHeader from "components/ContentHeader"
+import ContentInput from "components/ContentInput"
 import ContentWrapper from "components/ContentWrapper"
 import { Form, Formik } from "formik"
 import { useAppDispatch, useAppSelector } from "hooks/redux"
@@ -9,7 +10,6 @@ import { useNavigate } from "react-router"
 import { toast } from "react-toastify"
 import { LOGIN_STATUS, setStatus } from "redux/authSlice"
 import * as Yup from "yup"
-import LoginInput from "./LoginInput"
 
 interface ILoginForm {
   password: string
@@ -52,7 +52,7 @@ const Login = () => {
       <Form autoComplete="off" className="mt-60">
         <ContentWrapper>
           <ContentHeader text="What is the password?" />
-          <LoginInput />
+          <ContentInput name="password" type="text" required />
           <ContentButton type="submit" text="Proceed" />
         </ContentWrapper>
       </Form>

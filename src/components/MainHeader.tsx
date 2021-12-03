@@ -1,4 +1,4 @@
-const Title = () => {
+const MainHeader = () => {
   return (
     <header className="text-center">
       <h1 className="text-4xl font-bold text-green-500">Barrios-Tamayo</h1>
@@ -7,4 +7,4 @@ const Title = () => {
   )
 }
 
-export default Title
+export default MainHeader

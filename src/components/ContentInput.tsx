@@ -1,7 +1,9 @@
-import { useField } from "formik"
+import { FieldHookConfig, useField } from "formik"
 
-const LoginInput = () => {
-  const [field, meta] = useField({ name: "password", type: "text", required: true })
+type Props = FieldHookConfig<string>
+
+const ContentInput = (props: Props) => {
+  const [field, meta] = useField(props)
 
   return (
     <div>
@@ -13,4 +15,4 @@ const LoginInput = () => {
   )
 }
 
-export default LoginInput
+export default ContentInput
