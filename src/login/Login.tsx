@@ -1,15 +1,15 @@
 import LoginButton from "./LoginButton"
+import LoginFormWrapper from "./LoginFormWrapper"
 import LoginHeader from "./LoginHeader"
 import LoginInput from "./LoginInput"
-import LoginWrapper from "./LoginWrapper"
 
 const Login = () => {
   return (
-    <LoginWrapper>
+    <LoginFormWrapper>
       <LoginHeader />
       <LoginInput />
       <LoginButton />
-    </LoginWrapper>
+    </LoginFormWrapper>
   )
 }
 
