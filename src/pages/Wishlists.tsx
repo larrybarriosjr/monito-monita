@@ -107,7 +107,7 @@ const Wishlists = () => {
           {wishlists.length
             ? wishlists.map((wishlist, idx) => (
                 <div key={idx} className="flex w-full gap-2">
-                  <div className="w-full px-4 py-2 font-bold text-white bg-green-700 rounded-lg">
+                  <div className="w-full px-4 py-2 font-bold text-white bg-green-900 rounded-lg">
                     {wishlist}
                   </div>
                   <button
@@ -120,6 +120,15 @@ const Wishlists = () => {
                 </div>
               ))
             : null}
+        </ContentWrapper>
+        <ContentWrapper>
+          <button
+            type="button"
+            onClick={() => navigate("/members")}
+            className="px-4 py-2 text-sm font-bold text-white uppercase border-2 border-green-500 rounded-lg hover:border-green-700"
+          >
+            Go Back
+          </button>
         </ContentWrapper>
       </Form>
     </Formik>
