@@ -21,3 +21,12 @@ export const getWishlists = (name: string) => {
     return response.json()
   })
 }
+
+export const addWishlists = (data: { name: string; wishlist: string[] }) => {
+  return fetch(BASE_URL + "/wishlists-add", {
+    body: JSON.stringify(data),
+    method: "POST",
+  }).then(response => {
+    return response.json()
+  })
+}
