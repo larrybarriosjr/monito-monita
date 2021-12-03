@@ -8,8 +8,10 @@
 
 # production
 /build
+/functions-build
 
 # misc
+.netlify
 .DS_Store
 .env.local
 .env.development.local
