@@ -1,4 +1,4 @@
-import { login } from "api/auth"
+import { login } from "api"
 import ContentButton from "components/ContentButton"
 import ContentHeader from "components/ContentHeader"
 import ContentInput from "components/ContentInput"

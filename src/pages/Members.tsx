@@ -1,4 +1,4 @@
-import { getAllMembers } from "api/members"
+import { getAllMembers } from "api"
 import ContentButton from "components/ContentButton"
 import ContentHeader from "components/ContentHeader"
 import ContentWrapper from "components/ContentWrapper"
@@ -35,7 +35,7 @@ const MembersList = () => {
       <ContentHeader text="Check the wishlists" />
       <div className="grid grid-cols-2 gap-4 my-2">
         {memberList.map((member, idx) => (
-          <ContentButton key={idx} text={member} onClick={handleClick} />
+          <ContentButton key={idx} type="button" text={member} onClick={handleClick} />
         ))}
       </div>
     </ContentWrapper>
