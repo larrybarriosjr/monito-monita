@@ -1,6 +1,7 @@
 import { getAllMembers } from "api/members"
+import ContentButton from "components/ContentButton"
 import { useAppDispatch, useAppSelector } from "hooks/redux"
-import { useEffect } from "react"
+import React, { useEffect } from "react"
 import { useNavigate } from "react-router"
 import { toast } from "react-toastify"
 import { setMemberList } from "redux/membersSlice"
@@ -14,7 +15,7 @@ const MembersList = () => {
     const fetchData = async () => {
       try {
         const res = await getAllMembers()
-        dispatch(setMemberList(res))
+        dispatch(setMemberList(res.sort()))
       } catch (error) {
         navigate("/")
         toast.error("Something went wrong.")
@@ -23,10 +24,14 @@ const MembersList = () => {
     fetchData()
   }, [dispatch, navigate])
 
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    navigate("/members/" + e.currentTarget.textContent)
+  }
+
   return (
-    <div>
+    <div className="grid grid-cols-2 gap-4 my-2">
       {memberList.map((member, idx) => (
-        <div key={idx}>{member}</div>
+        <ContentButton key={idx} text={member} onClick={handleClick} />
       ))}
     </div>
   )
