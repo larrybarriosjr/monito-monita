@@ -22,8 +22,8 @@ export const getWishlists = (name: string) => {
   })
 }
 
-export const addWishlists = (data: { name: string; wishlist: string[] }) => {
-  return fetch(BASE_URL + "/wishlists-add", {
+export const updateWishlists = (data: { name: string; wishlist: string[] }) => {
+  return fetch(BASE_URL + "/wishlists-update", {
     body: JSON.stringify(data),
     method: "POST",
   }).then(response => {

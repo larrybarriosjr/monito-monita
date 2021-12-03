@@ -1,11 +1,12 @@
-import { addWishlists, getWishlists } from "api"
+/* eslint-disable indent */
+import { getWishlists, updateWishlists } from "api"
 import ContentButton from "components/ContentButton"
 import ContentHeader from "components/ContentHeader"
 import ContentInput from "components/ContentInput"
 import ContentWrapper from "components/ContentWrapper"
-import { Form, Formik } from "formik"
+import { Form, Formik, FormikHelpers } from "formik"
 import { useAppDispatch, useAppSelector } from "hooks/redux"
-import { useEffect } from "react"
+import React, { useEffect } from "react"
 import { useNavigate, useParams } from "react-router"
 import { toast } from "react-toastify"
 import { REQUEST_STATUS, setWishLists, setWishListStatus } from "redux/wishlistsSlice"
@@ -48,20 +49,42 @@ const Wishlists = () => {
     }
   }, [dispatch, navigate, params.name])
 
-  const handleSubmit = async (values: IWishlistForm) => {
+  const handleSubmit = async (values: IWishlistForm, { resetForm }: FormikHelpers<IWishlistForm>) => {
     if (wishlists.map(x => x.toLowerCase()).includes(values.wishlist.toLowerCase())) {
       toast.error("Already exists.")
       return
     }
+    resetForm()
     dispatch(setWishListStatus(REQUEST_STATUS.FETCHING))
     try {
       if (params.name) {
-        const res = await addWishlists({ name: params.name, wishlist: [values.wishlist, ...wishlists] })
+        const res = await updateWishlists({ name: params.name, wishlist: [values.wishlist, ...wishlists] })
         dispatch(setWishLists(res))
         dispatch(setWishListStatus(REQUEST_STATUS.SUCCESS))
+        toast.success("Wishlist added.")
       }
     } catch (error) {
       console.log(error)
+      toast.error("Something went wrong.")
+      dispatch(setWishListStatus(REQUEST_STATUS.ERROR))
+    }
+  }
+
+  const handleDelete = (wishlist: string) => async () => {
+    dispatch(setWishListStatus(REQUEST_STATUS.FETCHING))
+    try {
+      if (params.name) {
+        const res = await updateWishlists({
+          name: params.name,
+          wishlist: wishlists.filter(x => x !== wishlist),
+        })
+        dispatch(setWishLists(res))
+        dispatch(setWishListStatus(REQUEST_STATUS.SUCCESS))
+        toast.success("Wishlist removedd.")
+      }
+    } catch (error) {
+      console.log(error)
+      toast.error("Something went wrong.")
       dispatch(setWishListStatus(REQUEST_STATUS.ERROR))
     }
   }
@@ -81,9 +104,22 @@ const Wishlists = () => {
           ) : (
             <ContentHeader text={params.name + " has no wishlist."} />
           )}
-          {wishlists.map((wishlist, idx) => (
-            <div key={idx}>{wishlist}</div>
-          ))}
+          {wishlists.length
+            ? wishlists.map((wishlist, idx) => (
+                <div key={idx} className="flex w-full gap-2">
+                  <div className="w-full px-4 py-2 font-bold text-white bg-green-700 rounded-lg">
+                    {wishlist}
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleDelete(wishlist)}
+                    className="px-4 py-2 text-sm font-bold text-white uppercase bg-red-700 rounded-lg hover:bg-red-900"
+                  >
+                    x
+                  </button>
+                </div>
+              ))
+            : null}
         </ContentWrapper>
       </Form>
     </Formik>
