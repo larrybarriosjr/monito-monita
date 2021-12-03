@@ -2,6 +2,7 @@ import MainHeader from "components/MainHeader"
 import MainWrapper from "components/MainWrapper"
 import Login from "pages/Login"
 import Members from "pages/Members"
+import Wishlists from "pages/Wishlists"
 import { Route, Routes } from "react-router"
 
 const App = () => {
@@ -11,7 +12,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/members" element={<Members />} />
-        <Route path="/members/:name" element={<div />} />
+        <Route path="/members/:name" element={<Wishlists />} />
       </Routes>
     </MainWrapper>
   )
