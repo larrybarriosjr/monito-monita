@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from "hooks/redux"
 import { useEffect } from "react"
 import { useNavigate } from "react-router"
 import { toast } from "react-toastify"
-import { LOGIN_STATUS, setStatus } from "redux/loginSlice"
+import { LOGIN_STATUS, setStatus } from "redux/authSlice"
 import * as Yup from "yup"
 import LoginButton from "./LoginButton"
 import LoginInput from "./LoginInput"
@@ -21,7 +21,7 @@ const LoginSchema: Yup.SchemaOf<ILoginForm> = Yup.object().shape({
 
 const Login = () => {
   const navigate = useNavigate()
-  const loginStatus = useAppSelector(state => state.login.status)
+  const loginStatus = useAppSelector(state => state.auth.status)
   const dispatch = useAppDispatch()
 
   useEffect(() => {
