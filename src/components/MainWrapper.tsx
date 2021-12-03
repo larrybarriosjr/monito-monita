@@ -6,7 +6,9 @@ type Props = {
 
 const MainWrapper = ({ children }: Props) => {
   return (
-    <div className="flex flex-col w-screen h-screen pt-16 bg-gray-900 place-items-center">{children}</div>
+    <div className="flex flex-col w-screen h-screen gap-8 pt-16 bg-gray-900 place-items-center">
+      {children}
+    </div>
   )
 }
 
