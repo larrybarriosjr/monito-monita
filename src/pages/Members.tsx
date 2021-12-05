@@ -7,11 +7,19 @@ import React, { useEffect } from "react"
 import { useNavigate } from "react-router"
 import { toast } from "react-toastify"
 import { setMemberList } from "redux/membersSlice"
+import { useReadLocalStorage } from "usehooks-ts"
 
 const MembersList = () => {
   const navigate = useNavigate()
   const memberList = useAppSelector(state => state.members.data)
   const dispatch = useAppDispatch()
+  const memberStored = useReadLocalStorage("member")
+
+  useEffect(() => {
+    if (!memberStored) {
+      navigate("/")
+    }
+  }, [memberStored, navigate])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -32,7 +40,7 @@ const MembersList = () => {
 
   return (
     <ContentWrapper>
-      <ContentHeader text="Check the wishlists" />
+      <ContentHeader text={`Hi, ${memberStored}. Please check the wishlists.`} />
       <div className="grid grid-cols-2 gap-4 my-2">
         {memberList.map((member, idx) => (
           <ContentButton key={idx} type="button" text={member} onClick={handleClick(member)} />
