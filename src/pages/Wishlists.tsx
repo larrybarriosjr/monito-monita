@@ -103,7 +103,9 @@ const Wishlists = () => {
           {wishlistStatus === REQUEST_STATUS.FETCHING ? (
             <ContentHeader text="Fetching Wishlist..." />
           ) : wishlists.length ? (
-            <ContentHeader text={params.name + "'s Current Wishlist"} />
+            <ContentHeader
+              text={params.name === member ? "Your Current Wishlist" : params.name + "'s Current Wishlist"}
+            />
           ) : (
             <ContentHeader
               text={
@@ -125,7 +127,7 @@ const Wishlists = () => {
                       onClick={handleDelete(wishlist)}
                       className="px-4 py-2 text-sm font-bold text-white uppercase bg-red-700 rounded-lg hover:bg-red-900"
                     >
-                      x
+                      ×
                     </button>
                   ) : null}
                 </div>

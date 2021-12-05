@@ -11,7 +11,7 @@ exports.handler = (event, _context, callback) => {
   return client
     .query(
       q.Select(
-        ["data", "wishlists"],
+        ["data", "wishlist"],
         q.Get(q.Match(q.Index("wishlists_by_year_and_member"), [currentYear, data])),
       ),
     )
