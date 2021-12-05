@@ -9,6 +9,7 @@ import { useEffect } from "react"
 import { useNavigate } from "react-router"
 import { toast } from "react-toastify"
 import { LOGIN_STATUS, setStatus } from "redux/authSlice"
+import { useLocalStorage } from "usehooks-ts"
 import * as Yup from "yup"
 
 interface ILoginForm {
@@ -23,6 +24,13 @@ const Login = () => {
   const navigate = useNavigate()
   const loginStatus = useAppSelector(state => state.auth.status)
   const dispatch = useAppDispatch()
+  const [member, setMember] = useLocalStorage("member", "")
+
+  useEffect(() => {
+    if (member) {
+      navigate("/members")
+    }
+  }, [member, navigate])
 
   useEffect(() => {
     if (loginStatus === LOGIN_STATUS.ERROR) {
@@ -37,11 +45,10 @@ const Login = () => {
 
   const handleSubmit = async (values: ILoginForm) => {
     try {
-      const res = await login(values.password)
-      if (res.data.year === new Date().getFullYear()) {
-        dispatch(setStatus(LOGIN_STATUS.SUCCESS))
-        navigate("/members", { replace: true })
-      }
+      const result = await login(values.password)
+      setMember(result)
+      dispatch(setStatus(LOGIN_STATUS.SUCCESS))
+      navigate("/members", { replace: true })
     } catch (error) {
       dispatch(setStatus(LOGIN_STATUS.ERROR))
     }
