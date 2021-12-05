@@ -16,7 +16,7 @@ const MembersList = () => {
   const memberStored = useReadLocalStorage("member")
 
   useEffect(() => {
-    if (!memberStored) {
+    if (!memberStored || typeof memberStored !== "string") {
       navigate("/")
     }
   }, [memberStored, navigate])

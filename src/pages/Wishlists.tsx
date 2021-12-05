@@ -29,7 +29,7 @@ const Wishlists = () => {
   const member = useReadLocalStorage("member")
 
   useEffect(() => {
-    if (!member) {
+    if (!member || typeof member !== "string") {
       navigate("/")
     }
   }, [member, navigate])

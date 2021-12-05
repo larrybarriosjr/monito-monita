@@ -27,7 +27,7 @@ const Login = () => {
   const [member, setMember] = useLocalStorage("member", "")
 
   useEffect(() => {
-    if (member) {
+    if (member && typeof member === "string") {
       navigate("/members")
     }
   }, [member, navigate])
