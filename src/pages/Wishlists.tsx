@@ -1,4 +1,3 @@
-/* eslint-disable indent */
 import { getWishlists, updateWishlists } from "api"
 import ContentButton from "components/ContentButton"
 import ContentHeader from "components/ContentHeader"
@@ -10,6 +9,7 @@ import React, { useEffect } from "react"
 import { useNavigate, useParams } from "react-router"
 import { toast } from "react-toastify"
 import { REQUEST_STATUS, setWishLists, setWishListStatus } from "redux/wishlistsSlice"
+import { useReadLocalStorage } from "usehooks-ts"
 import * as Yup from "yup"
 
 interface IWishlistForm {
@@ -26,6 +26,7 @@ const Wishlists = () => {
   const wishlists = useAppSelector(state => state.wishlists.data)
   const wishlistStatus = useAppSelector(state => state.wishlists.status)
   const dispatch = useAppDispatch()
+  const member = useReadLocalStorage("member")
 
   useEffect(() => {
     const fetchData = async () => {
@@ -92,17 +93,25 @@ const Wishlists = () => {
   return (
     <Formik initialValues={{ wishlist: "" }} validationSchema={LoginSchema} onSubmit={handleSubmit}>
       <Form autoComplete="off">
-        <ContentWrapper>
-          <ContentInput name="wishlist" type="text" required />
-          <ContentButton type="submit" text="Add wishlist" />
-        </ContentWrapper>
+        {params.name === member ? (
+          <ContentWrapper>
+            <ContentInput name="wishlist" type="text" required />
+            <ContentButton type="submit" text="Add wishlist" />
+          </ContentWrapper>
+        ) : null}
         <ContentWrapper>
           {wishlistStatus === REQUEST_STATUS.FETCHING ? (
             <ContentHeader text="Fetching Wishlist..." />
           ) : wishlists.length ? (
             <ContentHeader text={params.name + "'s Current Wishlist"} />
           ) : (
-            <ContentHeader text={params.name + " has no wishlist."} />
+            <ContentHeader
+              text={
+                params.name === member
+                  ? "You have no wishlist. Add now."
+                  : params.name + " has no wishlist yet."
+              }
+            />
           )}
           {wishlists.length
             ? wishlists.map((wishlist, idx) => (
