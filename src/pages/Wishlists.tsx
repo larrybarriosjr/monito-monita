@@ -99,6 +99,9 @@ const Wishlists = () => {
   return (
     <Formik initialValues={{ wishlist: "" }} validationSchema={LoginSchema} onSubmit={handleSubmit}>
       <Form autoComplete="off">
+        <ContentWrapper>
+          <ContentHeader text="Budget: ₱500" />
+        </ContentWrapper>
         {params.name === member ? (
           <ContentWrapper>
             <ContentInput name="wishlist" type="text" required />
