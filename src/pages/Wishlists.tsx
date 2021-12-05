@@ -29,6 +29,12 @@ const Wishlists = () => {
   const member = useReadLocalStorage("member")
 
   useEffect(() => {
+    if (!member) {
+      navigate("/")
+    }
+  }, [member, navigate])
+
+  useEffect(() => {
     const fetchData = async () => {
       dispatch(setWishListStatus(REQUEST_STATUS.FETCHING))
       try {
