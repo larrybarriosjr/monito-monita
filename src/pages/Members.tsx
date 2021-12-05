@@ -26,8 +26,8 @@ const MembersList = () => {
     fetchData()
   }, [dispatch, navigate])
 
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    navigate("/members/" + e.currentTarget.textContent)
+  const handleClick = (member: string) => () => {
+    navigate("/members/" + member)
   }
 
   return (
@@ -35,7 +35,7 @@ const MembersList = () => {
       <ContentHeader text="Check the wishlists" />
       <div className="grid grid-cols-2 gap-4 my-2">
         {memberList.map((member, idx) => (
-          <ContentButton key={idx} type="button" text={member} onClick={handleClick} />
+          <ContentButton key={idx} type="button" text={member} onClick={handleClick(member)} />
         ))}
       </div>
     </ContentWrapper>

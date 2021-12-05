@@ -11,13 +11,13 @@ exports.handler = (_event, _context, callback) => {
     .query(
       q.Map(
         q.Paginate(q.Documents(q.Collection("Members"))),
-        q.Lambda(x => q.Get(x)),
+        q.Lambda(x => q.Select(["data", "name"], q.Get(x))),
       ),
     )
     .then(response => {
       return callback(null, {
         statusCode: 200,
-        body: JSON.stringify(response.data.map(x => x.data.name)),
+        body: JSON.stringify(response.data),
       })
     })
     .catch(error => {
