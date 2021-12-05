@@ -10,18 +10,15 @@ exports.handler = (event, _context, callback) => {
   const currentYear = new Date().getFullYear().toString()
   return client
     .query(
-      q.Map(
-        q.Filter(
-          q.Paginate(q.Match(q.Index("passwords_by_year"), currentYear)),
-          q.Lambda(x => q.Equals(data, q.Select(["data", "code"], q.Get(x)))),
-        ),
-        q.Lambda(x => q.Select(["data", "member"], q.Get(x))),
+      q.Select(
+        ["data", "member"],
+        q.Get(q.Match(q.Index("passwords_by_year_and_code"), [currentYear, data])),
       ),
     )
     .then(response => {
       return callback(null, {
         statusCode: 200,
-        body: JSON.stringify(response.data[0]),
+        body: JSON.stringify(response),
       })
     })
     .catch(error => {

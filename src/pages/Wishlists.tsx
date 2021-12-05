@@ -119,13 +119,15 @@ const Wishlists = () => {
                   <div className="w-full px-4 py-2 font-bold text-white bg-green-900 rounded-lg">
                     {wishlist}
                   </div>
-                  <button
-                    type="button"
-                    onClick={handleDelete(wishlist)}
-                    className="px-4 py-2 text-sm font-bold text-white uppercase bg-red-700 rounded-lg hover:bg-red-900"
-                  >
-                    x
-                  </button>
+                  {params.name === member ? (
+                    <button
+                      type="button"
+                      onClick={handleDelete(wishlist)}
+                      className="px-4 py-2 text-sm font-bold text-white uppercase bg-red-700 rounded-lg hover:bg-red-900"
+                    >
+                      x
+                    </button>
+                  ) : null}
                 </div>
               ))
             : null}
