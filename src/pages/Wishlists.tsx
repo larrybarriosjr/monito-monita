@@ -5,11 +5,9 @@ import ContentInput from "components/ContentInput"
 import ContentItem from "components/ContentItem"
 import ContentWrapper from "components/ContentWrapper"
 import { Form, Formik, FormikHelpers } from "formik"
-import { useAppDispatch, useAppSelector } from "hooks/redux"
-import React, { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router"
 import { toast } from "react-toastify"
-import { REQUEST_STATUS, setWishLists, setWishListStatus } from "redux/wishlistsSlice"
 import { useReadLocalStorage } from "usehooks-ts"
 import * as Yup from "yup"
 
@@ -24,9 +22,8 @@ const LoginSchema: Yup.SchemaOf<IWishlistForm> = Yup.object().shape({
 const Wishlists = () => {
   const params = useParams()
   const navigate = useNavigate()
-  const dispatch = useAppDispatch()
-  const wishlists = useAppSelector(state => state.wishlists.data)
-  const wishlistStatus = useAppSelector(state => state.wishlists.status)
+  const [wishlists, setWishlists] = useState<string[]>([])
+  const [fetching, setFetching] = useState(false)
   const memberName = useReadLocalStorage("member")
 
   const noWishlist =
@@ -34,65 +31,60 @@ const Wishlists = () => {
   const currentWishlist =
     params.name === memberName ? "Your Current Wishlist" : params.name + "'s Current Wishlist"
 
+  const handleSuccess = (action?: "add" | "remove") => (res: string[]) => {
+    if (action) {
+      const done = { add: "added", remove: "removed" }
+      toast.success(`Wishlist ${done[action]}.`)
+    }
+
+    setFetching(false)
+    setWishlists(res)
+  }
+
+  const handleError = () => {
+    setFetching(false)
+    toast.error("Something went wrong.")
+  }
+
   useEffect(() => {
-    const fetchData = async () => {
-      dispatch(setWishListStatus(REQUEST_STATUS.FETCHING))
-      try {
-        if (params.name) {
-          const res = await getWishlists(params.name)
-          dispatch(setWishLists(res))
-          dispatch(setWishListStatus(REQUEST_STATUS.SUCCESS))
-        }
-      } catch (error) {
-        navigate("/members")
-        toast.error("Something went wrong.")
-        dispatch(setWishListStatus(REQUEST_STATUS.ERROR))
-      }
+    if (params.name) {
+      setFetching(true)
+      getWishlists(params.name).then(handleSuccess()).catch(handleError)
     }
-    fetchData()
+
     return () => {
-      dispatch(setWishLists([]))
-      dispatch(setWishListStatus(REQUEST_STATUS.IDLE))
+      setFetching(false)
+      setWishlists([])
     }
-  }, [dispatch, navigate, params.name])
+  }, [params.name])
 
   const handleSubmit = async (values: IWishlistForm, { resetForm }: FormikHelpers<IWishlistForm>) => {
-    if (wishlists.map(x => x.toLowerCase()).includes(values.wishlist.toLowerCase())) {
+    const wishlist = values.wishlist.toLowerCase()
+    const wishlistExists = wishlists.map(x => x.toLowerCase()).includes(wishlist)
+
+    if (wishlistExists) {
       toast.error("Already exists.")
       return
     }
-    resetForm()
-    dispatch(setWishListStatus(REQUEST_STATUS.FETCHING))
-    try {
-      if (params.name) {
-        const res = await updateWishlists({ name: params.name, wishlist: [values.wishlist, ...wishlists] })
-        dispatch(setWishLists(res))
-        dispatch(setWishListStatus(REQUEST_STATUS.SUCCESS))
-        toast.success("Wishlist added.")
-      }
-    } catch (error) {
-      console.log(error)
-      toast.error("Something went wrong.")
-      dispatch(setWishListStatus(REQUEST_STATUS.ERROR))
+
+    if (params.name) {
+      resetForm()
+      setFetching(true)
+      updateWishlists({ name: params.name, wishlist: [values.wishlist, ...wishlists] })
+        .then(handleSuccess("add"))
+        .catch(handleError)
     }
   }
 
-  const handleDelete = (wishlist: string) => async () => {
-    dispatch(setWishListStatus(REQUEST_STATUS.FETCHING))
-    try {
-      if (params.name) {
-        const res = await updateWishlists({
-          name: params.name,
-          wishlist: wishlists.filter(x => x !== wishlist),
-        })
-        dispatch(setWishLists(res))
-        dispatch(setWishListStatus(REQUEST_STATUS.SUCCESS))
-        toast.success("Wishlist removed.")
-      }
-    } catch (error) {
-      console.log(error)
-      toast.error("Something went wrong.")
-      dispatch(setWishListStatus(REQUEST_STATUS.ERROR))
+  const handleDelete = (wishlist: string) => () => {
+    if (params.name) {
+      setFetching(true)
+      updateWishlists({
+        name: params.name,
+        wishlist: wishlists.filter(x => x !== wishlist),
+      })
+        .then(handleSuccess("remove"))
+        .catch(handleError)
     }
   }
 
@@ -109,7 +101,7 @@ const Wishlists = () => {
           </ContentWrapper>
         ) : null}
         <ContentWrapper>
-          {wishlistStatus === REQUEST_STATUS.FETCHING ? (
+          {fetching ? (
             <ContentHeader text="Fetching Wishlist..." />
           ) : wishlists.length ? (
             <ContentHeader text={currentWishlist} />

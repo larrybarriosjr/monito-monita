@@ -2,7 +2,7 @@ import { getAllMembers } from "api"
 import ContentButton from "components/ContentButton"
 import ContentHeader from "components/ContentHeader"
 import ContentWrapper from "components/ContentWrapper"
-import React, { useEffect } from "react"
+import { useEffect } from "react"
 import { useNavigate } from "react-router"
 import { toast } from "react-toastify"
 import { useLocalStorage, useReadLocalStorage } from "usehooks-ts"
@@ -22,8 +22,8 @@ const MembersList = () => {
         const res = await getAllMembers()
         setMemberList(res.sort())
       } catch (error) {
-        navigate("/")
         toast.error("Something went wrong.")
+        navigate("/")
       }
     }
 
