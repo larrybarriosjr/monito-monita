@@ -2,35 +2,35 @@ import { getAllMembers } from "api"
 import ContentButton from "components/ContentButton"
 import ContentHeader from "components/ContentHeader"
 import ContentWrapper from "components/ContentWrapper"
-import { useAppDispatch, useAppSelector } from "hooks/redux"
 import React, { useEffect } from "react"
 import { useNavigate } from "react-router"
 import { toast } from "react-toastify"
-import { setMemberList } from "redux/membersSlice"
-import { useReadLocalStorage } from "usehooks-ts"
+import { useLocalStorage, useReadLocalStorage } from "usehooks-ts"
 
 const MembersList = () => {
   const navigate = useNavigate()
-  const dispatch = useAppDispatch()
-  const memberList = useAppSelector(state => state.members.data)
   const memberName = useReadLocalStorage("member")
+  const [memberList, setMemberList] = useLocalStorage("memberList", [])
 
   const memberHeader = memberList.length
     ? `Hi, ${memberName}. Please check the wishlists.`
     : "Fetching members..."
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchMemberList = async () => {
       try {
         const res = await getAllMembers()
-        dispatch(setMemberList(res.sort()))
+        setMemberList(res.sort())
       } catch (error) {
         navigate("/")
         toast.error("Something went wrong.")
       }
     }
-    fetchData()
-  }, [dispatch, navigate])
+
+    if (!memberList.length) {
+      fetchMemberList()
+    }
+  }, [memberList.length, navigate, setMemberList])
 
   const handleClick = (member: string) => () => {
     navigate("/members/" + member)
