@@ -87,7 +87,7 @@ const Wishlists = () => {
         })
         dispatch(setWishLists(res))
         dispatch(setWishListStatus(REQUEST_STATUS.SUCCESS))
-        toast.success("Wishlist removedd.")
+        toast.success("Wishlist removed.")
       }
     } catch (error) {
       console.log(error)

@@ -15,6 +15,10 @@ const MembersList = () => {
   const memberList = useAppSelector(state => state.members.data)
   const memberName = useReadLocalStorage("member")
 
+  const memberHeader = memberList.length
+    ? `Hi, ${memberName}. Please check the wishlists.`
+    : "Fetching members..."
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -34,7 +38,7 @@ const MembersList = () => {
 
   return (
     <ContentWrapper>
-      <ContentHeader text={`Hi, ${memberName}. Please check the wishlists.`} />
+      <ContentHeader text={memberHeader} />
       <div className="grid grid-cols-2 gap-4 my-2">
         {memberList.map((member, idx) => (
           <ContentButton key={idx} type="button" text={member} onClick={handleClick(member)} />
