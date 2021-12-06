@@ -20,14 +20,13 @@ const LoginSchema: Yup.SchemaOf<ILoginForm> = Yup.object().shape({
 const Login = () => {
   const [memberName, setMemberName] = useLocalStorage("member", "")
 
-  const handleSubmit = async (values: ILoginForm) => {
-    try {
-      const result = await login(values.password)
-      toast.success(`You got it, ${result}!`)
-      setMemberName(result)
-    } catch (error) {
-      toast.error("Wrong password.")
-    }
+  const handleSubmit = (values: ILoginForm) => {
+    login(values.password)
+      .then(res => {
+        toast.success(`You got it, ${res}!`)
+        setMemberName(res)
+      })
+      .catch(() => toast.error("Wrong password."))
   }
 
   if (memberName && typeof memberName === "string") {

@@ -1,4 +1,3 @@
-/* code from functions/todos-read-all.js */
 import faunadb from "faunadb"
 
 const q = faunadb.query

@@ -17,18 +17,13 @@ const MembersList = () => {
     : "Fetching members..."
 
   useEffect(() => {
-    const fetchMemberList = async () => {
-      try {
-        const res = await getAllMembers()
-        setMemberList(res.sort())
-      } catch (error) {
-        toast.error("Something went wrong.")
-        navigate("/")
-      }
-    }
-
     if (!memberList.length) {
-      fetchMemberList()
+      getAllMembers()
+        .then(res => setMemberList(res.sort()))
+        .catch(() => {
+          toast.error("Something went wrong.")
+          navigate("/")
+        })
     }
   }, [memberList.length, navigate, setMemberList])
 

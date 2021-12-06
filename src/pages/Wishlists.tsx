@@ -58,7 +58,7 @@ const Wishlists = () => {
     }
   }, [params.name])
 
-  const handleSubmit = async (values: IWishlistForm, { resetForm }: FormikHelpers<IWishlistForm>) => {
+  const handleSubmit = (values: IWishlistForm, { resetForm }: FormikHelpers<IWishlistForm>) => {
     const wishlist = values.wishlist.toLowerCase()
     const wishlistExists = wishlists.map(x => x.toLowerCase()).includes(wishlist)
 
