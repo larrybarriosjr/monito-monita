@@ -4,11 +4,8 @@ import ContentHeader from "components/ContentHeader"
 import ContentInput from "components/ContentInput"
 import ContentWrapper from "components/ContentWrapper"
 import { Form, Formik } from "formik"
-import { useAppDispatch, useAppSelector } from "hooks/redux"
-import { useEffect } from "react"
-import { useNavigate } from "react-router"
+import { Navigate } from "react-router"
 import { toast } from "react-toastify"
-import { LOGIN_STATUS, setStatus } from "redux/authSlice"
 import { useLocalStorage } from "usehooks-ts"
 import * as Yup from "yup"
 
@@ -21,37 +18,20 @@ const LoginSchema: Yup.SchemaOf<ILoginForm> = Yup.object().shape({
 })
 
 const Login = () => {
-  const navigate = useNavigate()
-  const dispatch = useAppDispatch()
-  const loginStatus = useAppSelector(state => state.auth.status)
   const [memberName, setMemberName] = useLocalStorage("member", "")
-
-  useEffect(() => {
-    if (memberName && typeof memberName === "string") {
-      navigate("/members")
-    }
-  }, [memberName, navigate])
-
-  useEffect(() => {
-    if (loginStatus === LOGIN_STATUS.ERROR) {
-      dispatch(setStatus(LOGIN_STATUS.IDLE))
-      toast.error("Wrong password.")
-    }
-    if (loginStatus === LOGIN_STATUS.SUCCESS) {
-      dispatch(setStatus(LOGIN_STATUS.IDLE))
-      toast.success("You got it!")
-    }
-  }, [dispatch, loginStatus])
 
   const handleSubmit = async (values: ILoginForm) => {
     try {
       const result = await login(values.password)
+      toast.success(`You got it, ${result}!`)
       setMemberName(result)
-      dispatch(setStatus(LOGIN_STATUS.SUCCESS))
-      navigate("/members", { replace: true })
     } catch (error) {
-      dispatch(setStatus(LOGIN_STATUS.ERROR))
+      toast.error("Wrong password.")
     }
+  }
+
+  if (memberName && typeof memberName === "string") {
+    return <Navigate to="/members" replace />
   }
 
   return (

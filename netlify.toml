@@ -9,3 +9,8 @@
 [dev]
   # Local dev command. A.k.a npm start
   command = "craco start"
+
+[[redirects]]
+    from = "/*"
+    to = "/index.html"
+    status = 200
