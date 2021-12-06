@@ -1,3 +1,4 @@
+import Linkify from "linkify-react"
 import ContentButton from "./ContentButton"
 
 type Props<T> = {
@@ -9,7 +10,13 @@ type Props<T> = {
 const ContentItem = <T,>({ item, canDelete, onDelete }: Props<T>) => {
   return (
     <div className="flex w-full gap-2">
-      <div className="w-full px-4 py-2 font-bold text-white bg-green-900 rounded-lg">{item}</div>
+      <Linkify
+        tagName="a"
+        className="w-full px-4 py-2 font-bold text-white bg-green-900 rounded-lg"
+        options={{ target: "_blank", className: "underline text-green-300" }}
+      >
+        {item}
+      </Linkify>
       {canDelete ? <ContentButton type="button" variant="error" text="×" onClick={onDelete} /> : null}
     </div>
   )
