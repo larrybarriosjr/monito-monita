@@ -2,6 +2,7 @@ import { getWishlists, updateWishlists } from "api"
 import ContentButton from "components/ContentButton"
 import ContentHeader from "components/ContentHeader"
 import ContentInput from "components/ContentInput"
+import ContentItem from "components/ContentItem"
 import ContentWrapper from "components/ContentWrapper"
 import { Form, Formik, FormikHelpers } from "formik"
 import { useAppDispatch, useAppSelector } from "hooks/redux"
@@ -27,6 +28,11 @@ const Wishlists = () => {
   const wishlistStatus = useAppSelector(state => state.wishlists.status)
   const dispatch = useAppDispatch()
   const member = useReadLocalStorage("member")
+
+  const noWishlist =
+    params.name === member ? "You have no wishlist. Add now." : params.name + " has no wishlist yet."
+  const currentWishlist =
+    params.name === member ? "Your Current Wishlist" : params.name + "'s Current Wishlist"
 
   useEffect(() => {
     if (!member || typeof member !== "string") {
@@ -112,45 +118,28 @@ const Wishlists = () => {
           {wishlistStatus === REQUEST_STATUS.FETCHING ? (
             <ContentHeader text="Fetching Wishlist..." />
           ) : wishlists.length ? (
-            <ContentHeader
-              text={params.name === member ? "Your Current Wishlist" : params.name + "'s Current Wishlist"}
-            />
+            <ContentHeader text={currentWishlist} />
           ) : (
-            <ContentHeader
-              text={
-                params.name === member
-                  ? "You have no wishlist. Add now."
-                  : params.name + " has no wishlist yet."
-              }
-            />
+            <ContentHeader text={noWishlist} />
           )}
           {wishlists.length
             ? wishlists.map((wishlist, idx) => (
-                <div key={idx} className="flex w-full gap-2">
-                  <div className="w-full px-4 py-2 font-bold text-white bg-green-900 rounded-lg">
-                    {wishlist}
-                  </div>
-                  {params.name === member ? (
-                    <button
-                      type="button"
-                      onClick={handleDelete(wishlist)}
-                      className="px-4 py-2 text-sm font-bold text-white uppercase bg-red-700 rounded-lg hover:bg-red-900"
-                    >
-                      ×
-                    </button>
-                  ) : null}
-                </div>
+                <ContentItem
+                  key={idx}
+                  item={wishlist}
+                  canDelete={params.name === member}
+                  onDelete={handleDelete(wishlist)}
+                />
               ))
             : null}
         </ContentWrapper>
         <ContentWrapper>
-          <button
+          <ContentButton
             type="button"
+            variant="secondary"
+            text="Go Back"
             onClick={() => navigate("/members")}
-            className="px-4 py-2 text-sm font-bold text-white uppercase border-2 border-green-500 rounded-lg hover:border-green-700"
-          >
-            Go Back
-          </button>
+          />
         </ContentWrapper>
       </Form>
     </Formik>
