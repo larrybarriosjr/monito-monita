@@ -11,15 +11,15 @@ import { useReadLocalStorage } from "usehooks-ts"
 
 const MembersList = () => {
   const navigate = useNavigate()
-  const memberList = useAppSelector(state => state.members.data)
   const dispatch = useAppDispatch()
-  const memberStored = useReadLocalStorage("member")
+  const memberList = useAppSelector(state => state.members.data)
+  const memberName = useReadLocalStorage("member")
 
   useEffect(() => {
-    if (!memberStored || typeof memberStored !== "string") {
+    if (!memberName || typeof memberName !== "string") {
       navigate("/")
     }
-  }, [memberStored, navigate])
+  }, [memberName, navigate])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,7 +40,7 @@ const MembersList = () => {
 
   return (
     <ContentWrapper>
-      <ContentHeader text={`Hi, ${memberStored}. Please check the wishlists.`} />
+      <ContentHeader text={`Hi, ${memberName}. Please check the wishlists.`} />
       <div className="grid grid-cols-2 gap-4 my-2">
         {memberList.map((member, idx) => (
           <ContentButton key={idx} type="button" text={member} onClick={handleClick(member)} />

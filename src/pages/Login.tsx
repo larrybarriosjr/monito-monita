@@ -22,15 +22,15 @@ const LoginSchema: Yup.SchemaOf<ILoginForm> = Yup.object().shape({
 
 const Login = () => {
   const navigate = useNavigate()
-  const loginStatus = useAppSelector(state => state.auth.status)
   const dispatch = useAppDispatch()
-  const [member, setMember] = useLocalStorage("member", "")
+  const loginStatus = useAppSelector(state => state.auth.status)
+  const [memberName, setMemberName] = useLocalStorage("member", "")
 
   useEffect(() => {
-    if (member && typeof member === "string") {
+    if (memberName && typeof memberName === "string") {
       navigate("/members")
     }
-  }, [member, navigate])
+  }, [memberName, navigate])
 
   useEffect(() => {
     if (loginStatus === LOGIN_STATUS.ERROR) {
@@ -46,7 +46,7 @@ const Login = () => {
   const handleSubmit = async (values: ILoginForm) => {
     try {
       const result = await login(values.password)
-      setMember(result)
+      setMemberName(result)
       dispatch(setStatus(LOGIN_STATUS.SUCCESS))
       navigate("/members", { replace: true })
     } catch (error) {

@@ -24,21 +24,21 @@ const LoginSchema: Yup.SchemaOf<IWishlistForm> = Yup.object().shape({
 const Wishlists = () => {
   const params = useParams()
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
   const wishlists = useAppSelector(state => state.wishlists.data)
   const wishlistStatus = useAppSelector(state => state.wishlists.status)
-  const dispatch = useAppDispatch()
-  const member = useReadLocalStorage("member")
+  const memberName = useReadLocalStorage("member")
 
   const noWishlist =
-    params.name === member ? "You have no wishlist. Add now." : params.name + " has no wishlist yet."
+    params.name === memberName ? "You have no wishlist. Add now." : params.name + " has no wishlist yet."
   const currentWishlist =
-    params.name === member ? "Your Current Wishlist" : params.name + "'s Current Wishlist"
+    params.name === memberName ? "Your Current Wishlist" : params.name + "'s Current Wishlist"
 
   useEffect(() => {
-    if (!member || typeof member !== "string") {
+    if (!memberName || typeof memberName !== "string") {
       navigate("/")
     }
-  }, [member, navigate])
+  }, [memberName, navigate])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -108,7 +108,7 @@ const Wishlists = () => {
         <ContentWrapper>
           <ContentHeader text="Budget: ₱500" />
         </ContentWrapper>
-        {params.name === member ? (
+        {params.name === memberName ? (
           <ContentWrapper>
             <ContentInput name="wishlist" type="text" required />
             <ContentButton type="submit" text="Add wishlist" />
@@ -127,7 +127,7 @@ const Wishlists = () => {
                 <ContentItem
                   key={idx}
                   item={wishlist}
-                  canDelete={params.name === member}
+                  canDelete={params.name === memberName}
                   onDelete={handleDelete(wishlist)}
                 />
               ))
