@@ -16,12 +16,6 @@ const MembersList = () => {
   const memberName = useReadLocalStorage("member")
 
   useEffect(() => {
-    if (!memberName || typeof memberName !== "string") {
-      navigate("/")
-    }
-  }, [memberName, navigate])
-
-  useEffect(() => {
     const fetchData = async () => {
       try {
         const res = await getAllMembers()

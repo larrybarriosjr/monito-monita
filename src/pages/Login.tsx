@@ -56,7 +56,7 @@ const Login = () => {
 
   return (
     <Formik initialValues={{ password: "" }} validationSchema={LoginSchema} onSubmit={handleSubmit}>
-      <Form autoComplete="off" className="mt-60">
+      <Form autoComplete="off" className="mt-auto mb-10">
         <ContentWrapper>
           <ContentHeader text="What is the password?" />
           <ContentInput name="password" type="text" required />

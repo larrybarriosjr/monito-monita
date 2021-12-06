@@ -35,12 +35,6 @@ const Wishlists = () => {
     params.name === memberName ? "Your Current Wishlist" : params.name + "'s Current Wishlist"
 
   useEffect(() => {
-    if (!memberName || typeof memberName !== "string") {
-      navigate("/")
-    }
-  }, [memberName, navigate])
-
-  useEffect(() => {
     const fetchData = async () => {
       dispatch(setWishListStatus(REQUEST_STATUS.FETCHING))
       try {
