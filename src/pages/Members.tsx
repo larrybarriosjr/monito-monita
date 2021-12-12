@@ -5,11 +5,11 @@ import ContentWrapper from "components/ContentWrapper"
 import { useEffect } from "react"
 import { useNavigate } from "react-router"
 import { toast } from "react-toastify"
-import { useLocalStorage, useReadLocalStorage } from "usehooks-ts"
+import { useLocalStorage } from "usehooks-ts"
 
 const MembersList = () => {
   const navigate = useNavigate()
-  const memberName = useReadLocalStorage("member")
+  const [memberName, setMemberName] = useLocalStorage("member", "")
   const [memberList, setMemberList] = useLocalStorage("memberList", [])
 
   const memberHeader = memberList.length
@@ -31,6 +31,10 @@ const MembersList = () => {
     navigate("/members/" + member)
   }
 
+  const handleLogout = () => {
+    setMemberName("")
+  }
+
   return (
     <ContentWrapper>
       <ContentHeader text={memberHeader} />
@@ -38,7 +42,8 @@ const MembersList = () => {
         {memberList.map((member, idx) => (
           <ContentButton key={idx} type="button" text={member} onClick={handleClick(member)} />
         ))}
-      </div>
+      </div>{" "}
+      <ContentButton onClick={handleLogout} text="Logout" variant="secondary" />
     </ContentWrapper>
   )
 }

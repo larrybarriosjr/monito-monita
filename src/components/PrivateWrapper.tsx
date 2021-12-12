@@ -3,7 +3,7 @@ import { useReadLocalStorage } from "usehooks-ts"
 
 const PrivateWrapper = () => {
   const memberName = useReadLocalStorage("member")
-  const isLoggedIn = memberName || typeof memberName === "string"
+  const isLoggedIn = memberName || (typeof memberName === "string" && memberName.length)
 
   return isLoggedIn ? <Outlet /> : <Navigate to="/" />
 }
