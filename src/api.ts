@@ -1,26 +1,41 @@
 const API_URL = process.env.REACT_APP_BASE_URL + "/api"
 
+const fetchApi = (url: string, method = "GET", body?: string | Record<string, unknown>) => {
+  return fetch(API_URL + url, { body: JSON.stringify(body), method })
+}
+
 export const login = (password: string) => {
-  return fetch(API_URL + "/login", {
-    body: JSON.stringify(password),
-    method: "POST",
-  }).then(response => response.json())
+  return fetchApi("/login", "POST", password).then(response => {
+    if (response.status === 400) {
+      throw new Error()
+    }
+    return response.json()
+  })
 }
 
 export const getAllMembers = () => {
-  return fetch(API_URL + "/members-get-all").then(response => response.json())
+  return fetchApi("/members-get-all").then(response => {
+    if (response.status === 400) {
+      throw new Error()
+    }
+    return response.json()
+  })
 }
 
 export const getWishlists = (name: string) => {
-  return fetch(API_URL + "/wishlists-get", {
-    body: JSON.stringify(name),
-    method: "POST",
-  }).then(response => response.json())
+  return fetchApi("/wishlists-get", "POST", name).then(response => {
+    if (response.status === 400) {
+      throw new Error()
+    }
+    return response.json()
+  })
 }
 
 export const updateWishlists = (data: { name: string; wishlist: string[] }) => {
-  return fetch(API_URL + "/wishlists-update", {
-    body: JSON.stringify(data),
-    method: "POST",
-  }).then(response => response.json())
+  return fetchApi("/wishlists-update", "POST", data).then(response => {
+    if (response.status === 400) {
+      throw new Error()
+    }
+    return response.json()
+  })
 }
