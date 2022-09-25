@@ -7,7 +7,7 @@ const fetchApi = (url: string, method = "GET", body?: string | Record<string, un
 export const login = (password: string) => {
   return fetchApi("/login", "POST", password).then(response => {
     if (response.status === 400) {
-      throw new Error()
+      throw new Error("Wrong password.")
     }
     return response.json()
   })
@@ -16,7 +16,7 @@ export const login = (password: string) => {
 export const getAllMembers = () => {
   return fetchApi("/members-get-all").then(response => {
     if (response.status === 400) {
-      throw new Error()
+      throw new Error("Something went wrong.")
     }
     return response.json()
   })
@@ -25,7 +25,7 @@ export const getAllMembers = () => {
 export const getWishlists = (name: string) => {
   return fetchApi("/wishlists-get", "POST", name).then(response => {
     if (response.status === 400) {
-      throw new Error()
+      throw new Error("Something went wrong.")
     }
     return response.json()
   })
@@ -34,7 +34,7 @@ export const getWishlists = (name: string) => {
 export const updateWishlists = (data: { name: string; wishlist: string[] }) => {
   return fetchApi("/wishlists-update", "POST", data).then(response => {
     if (response.status === 400) {
-      throw new Error()
+      throw new Error("Something went wrong.")
     }
     return response.json()
   })

@@ -41,9 +41,9 @@ const Wishlists = () => {
     setWishlists(res)
   }
 
-  const handleError = () => {
+  const handleError = (err: Error) => {
     setFetching(false)
-    toast.error("Something went wrong.")
+    toast.error(err.message)
   }
 
   useEffect(() => {

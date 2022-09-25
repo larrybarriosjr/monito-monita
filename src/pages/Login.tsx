@@ -26,7 +26,9 @@ const Login = () => {
         toast.success(`You got it, ${res}!`)
         setMemberName(res)
       })
-      .catch(() => toast.error("Wrong password."))
+      .catch(err => {
+        toast.error((err as Error).message)
+      })
   }
 
   if (memberName && typeof memberName === "string") {

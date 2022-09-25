@@ -20,8 +20,8 @@ const MembersList = () => {
     if (!memberList.length) {
       getAllMembers()
         .then(res => setMemberList(res.data.sort()))
-        .catch(() => {
-          toast.error("Something went wrong.")
+        .catch(err => {
+          toast.error((err as Error).message)
           navigate("/")
         })
     }
