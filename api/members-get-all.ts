@@ -3,7 +3,7 @@ import faunadb from "faunadb"
 
 const q = faunadb.query
 const client = new faunadb.Client({
-  secret: process.env.FAUNA_ADMIN_KEY || process.env.REACT_APP_FAUNA_ADMIN_KEY || "",
+  secret: process.env.REACT_APP_FAUNA_ADMIN_KEY || "",
 })
 
 export default function (_req: VercelRequest, res: VercelResponse) {
