@@ -19,7 +19,7 @@ const MembersList = () => {
   useEffect(() => {
     if (!memberList.length) {
       getAllMembers()
-        .then(res => setMemberList(res.sort()))
+        .then(res => setMemberList(res.data.sort()))
         .catch(() => {
           toast.error("Something went wrong.")
           navigate("/")
