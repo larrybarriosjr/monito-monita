@@ -1,4 +1,4 @@
-const BASE_URL = "/.netlify/functions"
+const BASE_URL = "/api"
 
 export const login = (password: string) => {
   return fetch(BASE_URL + "/login", {

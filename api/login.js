@@ -2,7 +2,7 @@ import faunadb from "faunadb"
 
 const q = faunadb.query
 const client = new faunadb.Client({
-  secret: process.env.FAUNADB_SERVER_SECRET,
+  secret: process.env.FAUNA_ADMIN_KEY,
 })
 
 exports.handler = (event, _context, callback) => {
@@ -11,8 +11,8 @@ exports.handler = (event, _context, callback) => {
   return client
     .query(
       q.Select(
-        ["data", "wishlist"],
-        q.Get(q.Match(q.Index("wishlists_by_year_and_member"), [currentYear, data])),
+        ["data", "member"],
+        q.Get(q.Match(q.Index("passwords_by_year_and_code"), [currentYear, data])),
       ),
     )
     .then(response => {
