@@ -15,8 +15,8 @@
     "yup": "^0.32.11"
   },
   "scripts": {
-    "start": "craco start",
-    "build": "craco build",
+    "start": "doppler run -- vercel dev",
+    "build": "doppler run -- craco build && npx serve -s build",
     "test": "craco test",
     "eject": "react-scripts eject"
   },
